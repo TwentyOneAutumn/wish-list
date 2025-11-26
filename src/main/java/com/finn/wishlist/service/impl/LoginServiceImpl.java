@@ -1,6 +1,8 @@
 package com.finn.wishlist.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.finn.wishlist.domain.RoleMenuJoin;
 import com.finn.wishlist.domain.UserInfo;
 import com.finn.wishlist.domain.dto.LoginDto;
 import com.finn.wishlist.domain.entry.Row;
@@ -24,10 +26,10 @@ public class LoginServiceImpl implements ILoginService {
     private IMenuInfoService menuInfoService;
 
     @Autowired
-    private IRoleMenuJoinService roleMenuJoinService;
+    private IUserRoleJoinService userRoleJoinService;
 
     @Autowired
-    private IUserRoleJoinService userRoleJoinService;
+    private IRoleMenuJoinService roleMenuJoinService;
 
     /**
      * 登录
@@ -36,15 +38,22 @@ public class LoginServiceImpl implements ILoginService {
     public Row<LoginVo> toLogin(LoginDto dto) {
         String userCode = dto.getUserCode();
         String password = dto.getPassword();
-        long count = userInfoService.count(new LambdaQueryWrapper<UserInfo>()
+        UserInfo userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfo>()
                 .eq(UserInfo::getUserCode, userCode)
-                .eq(UserInfo::getPassword, password)
         );
-        if(count == 0){
-            throw new RuntimeException("账号或密码错误");
+        if(BeanUtil.isEmpty(userInfo)){
+            throw new RuntimeException("该账号不存在");
         }
+        if(!password.equals(userInfo.getPassword())){
+            throw new RuntimeException("密码错误");
+        }
+        Integer id = userInfo.getId();
 
-        roleMenuJoinService.list(new LambdaQueryWrapper<>());
+
+
+         roleMenuJoinService.list(new LambdaQueryWrapper<RoleMenuJoin>()
+                .in(RoleMenuJoin::getRoleId, id)
+        );
 
 
         return null;
