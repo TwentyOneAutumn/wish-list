@@ -90,7 +90,7 @@
 
         const data = await res.json();
         if (data.success) {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("use", data.token);
             location.reload();
         } else {
             alert("登录失败");

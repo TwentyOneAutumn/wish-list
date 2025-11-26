@@ -1,7 +1,10 @@
 package com.finn.wishlist.domain.vo;
 
+import com.finn.wishlist.domain.MenuInfo;
+import com.finn.wishlist.domain.RoleInfo;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,10 +23,10 @@ public class LoginVo {
     /**
      * 角色
      */
-    private Set<String> roles;
+    private List<RoleInfo> roles;
 
     /**
      * 菜单
      */
-    private Set<String> menus;
+    private List<MenuInfo> menus;
 }

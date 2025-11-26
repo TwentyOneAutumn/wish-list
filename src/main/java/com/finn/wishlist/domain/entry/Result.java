@@ -49,21 +49,18 @@ public class Result implements Serializable {
 
     /**
      * 是否成功
-     * @param result 数据对象
-     * @return true:成功 false:失败
      */
-    public boolean isSuccess(){
+    public boolean successIf(){
         return code > 199 && code < 300;
     }
 
 
 
     /**
-     * 判断请求是否成功
-     * @param msg 错误信息
+     * 是否异常
      */
-    public void isError(String msg){
-        if(!isSuccess()){
+    public void errorIf(String msg){
+        if(!successIf()){
             throw new RuntimeException(msg);
         }
     }

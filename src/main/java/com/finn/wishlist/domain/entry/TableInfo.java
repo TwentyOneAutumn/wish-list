@@ -60,7 +60,7 @@ public class TableInfo<T> implements Serializable {
      * @param tableInfo 数据对象
      * @return true:成功 false:失败
      */
-    public static <T> boolean isSuccess(TableInfo<T> tableInfo){
+    public static <T> boolean successIf(TableInfo<T> tableInfo){
         return BeanUtil.isNotEmpty(tableInfo) && tableInfo.getCode() > 199 && tableInfo.getCode() < 300 && CollUtil.isNotEmpty(tableInfo.getCollection());
     }
 
@@ -70,7 +70,7 @@ public class TableInfo<T> implements Serializable {
      * @param tableInfo 数据对象
      * @return true:失败 false:成功
      */
-    public static <T> boolean isError(TableInfo<T> tableInfo){
-        return !isSuccess(tableInfo);
+    public static <T> boolean errorIf(TableInfo<T> tableInfo){
+        return !successIf(tableInfo);
     }
 }

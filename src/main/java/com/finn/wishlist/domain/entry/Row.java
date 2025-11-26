@@ -75,7 +75,7 @@ public class Row<T> implements Serializable {
     /**
      * 是否成功
      */
-    public boolean isSuccess(){
+    public boolean successIf(){
         return code > 199 && code < 300;
     }
 
@@ -83,8 +83,8 @@ public class Row<T> implements Serializable {
      * 判断请求是否失败，如果失败则抛出异常
      * @param msg 错误信息
      */
-    public void isError(String msg){
-        if(!isSuccess()){
+    public void errorIf(String msg){
+        if(!successIf()){
             throw new RuntimeException(msg);
         }
     }
