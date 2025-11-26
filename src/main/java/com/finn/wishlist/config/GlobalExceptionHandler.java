@@ -1,7 +1,7 @@
-package com.core.handler;
+package com.finn.wishlist.config;
 
-import com.core.domain.Build;
-import com.core.domain.Result;
+import com.finn.wishlist.domain.entry.Build;
+import com.finn.wishlist.domain.entry.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindException;

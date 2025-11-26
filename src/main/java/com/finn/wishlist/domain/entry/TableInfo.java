@@ -1,4 +1,4 @@
-package com.finn.wishlist.domain;
+package com.finn.wishlist.domain.entry;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -41,7 +41,7 @@ public class TableInfo<T> implements Serializable {
         this.collection = collection;
     }
 
-    protected TableInfo(long total,Collection<T> collection){
+    protected TableInfo(long total, Collection<T> collection){
         this.total = total;
         this.code = HttpStatus.HTTP_OK;
         this.msg = "操作成功";

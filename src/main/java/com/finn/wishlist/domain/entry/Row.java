@@ -1,4 +1,4 @@
-package com.finn.wishlist.domain;
+package com.finn.wishlist.domain.entry;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpStatus;

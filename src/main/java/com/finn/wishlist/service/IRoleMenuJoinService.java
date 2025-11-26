@@ -2,7 +2,7 @@ package com.finn.wishlist.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.finn.wishlist.domain.RoleInfo;
-import com.finn.wishlist.domain.UserInfo;
+import com.finn.wishlist.domain.RoleMenuJoin;
 
-public interface IRoleInfoService extends IService<RoleInfo>  {
+public interface IRoleMenuJoinService extends IService<RoleMenuJoin>  {
 }

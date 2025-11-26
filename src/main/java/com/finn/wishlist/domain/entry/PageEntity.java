@@ -1,4 +1,4 @@
-package com.database.domain;
+package com.finn.wishlist.domain.entry;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;

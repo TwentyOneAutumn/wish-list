@@ -1,10 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>人生已完成清单</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
-<body>
-$END$
+<body class="bg-light">
+<!-- 登录页面 -->
+<div id="loginPage" class="container mt-5" style="max-width:400px; display:none;">
+    <div class="card p-4 shadow">
+        <h4 class="text-center mb-3">登录</h4>
+        <div class="mb-3">
+            <label class="form-label">用户名</label>
+            <i class="bi bi-robot"></i>
+            <input id="username" type="text" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">密码</label>
+            <input id="password" type="password" class="form-control" />
+        </div>
+        <button id="loginBtn" class="btn btn-primary w-100" ><i class="bi bi-robot"></i>登录</button>
+    </div>
+</div>
+
+<!-- 功能页面 -->
+<div id="mainPage" class="container mt-4" style="display:none;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>人生已完成清单</h3>
+        <button id="addBtn" class="btn btn-success">新增项目</button>
+    </div>
+    <div id="itemContainer" class="d-flex flex-wrap gap-2"></div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="itemModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">项目详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">备注</label>
+                    <textarea id="remarkInput" class="form-control" rows="3"></textarea>
+                </div>
+                <div id="uploadGroup" class="mb-3">
+                    <label class="form-label">上传文件</label>
+                    <input id="fileInput" type="file" class="form-control" />
+                </div>
+                <div id="previewGroup" class="mb-3" style="display:none;">
+                    <label class="form-label">上传图片预览</label>
+                    <img id="previewImg" src="" class="img-fluid rounded" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                <button id="saveBtn" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ======= Token 校验 =======
+    function checkAuth() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            document.getElementById("loginPage").style.display = "block";
+            return;
+        }
+        loadItems();
+        document.getElementById("mainPage").style.display = "block";
+    }
+
+    // ======= 登录 =======
+    document.getElementById("loginBtn").onclick = async function () {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const res = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            localStorage.setItem("token", data.token);
+            location.reload();
+        } else {
+            alert("登录失败");
+        }
+    };
+
+    // ======= 加载按钮数据 =======
+    async function loadItems() {
+        const res = await fetch("/api/items", {
+            headers: { Authorization: localStorage.getItem("token") }
+        });
+        const items = await res.json();
+
+        const container = document.getElementById("itemContainer");
+        container.innerHTML = "";
+
+        items.forEach(item => {
+            const btn = document.createElement("button");
+            btn.className = item.done ? "btn btn-success" : "btn btn-outline-secondary";
+            btn.innerText = item.name;
+            btn.onclick = () => openModal(item);
+
+            const wrapper = document.createElement("div");
+            wrapper.appendChild(btn);
+
+            const del = document.createElement("button");
+            del.className = "btn btn-danger btn-sm ms-1";
+            del.innerText = "删除";
+            del.onclick = () => deleteItem(item.id);
+            wrapper.appendChild(del);
+
+            container.appendChild(wrapper);
+        });
+    }
+
+    // ======= 模态框 =======
+    let currentItem = null;
+    const modal = new bootstrap.Modal(document.getElementById("itemModal"));
+
+    function openModal(item) {
+        currentItem = item;
+        document.getElementById("remarkInput").value = item.remark || "";
+
+        if (item.done) {
+            document.getElementById("uploadGroup").style.display = "none";
+            document.getElementById("previewGroup").style.display = "block";
+            document.getElementById("previewImg").src = item.imgUrl;
+        } else {
+            document.getElementById("uploadGroup").style.display = "block";
+            document.getElementById("previewGroup").style.display = "none";
+        }
+
+        modal.show();
+    }
+
+    // 保存
+    document.getElementById("saveBtn").onclick = async function () {
+        const remark = document.getElementById("remarkInput").value;
+        const formData = new FormData();
+        formData.append("id", currentItem.id);
+        formData.append("remark", remark);
+
+        const file = document.getElementById("fileInput").files[0];
+        if (file) formData.append("file", file);
+
+        await fetch("/api/saveItem", {
+            method: "POST",
+            headers: { Authorization: localStorage.getItem("token") },
+            body: formData
+        });
+
+        modal.hide();
+        loadItems();
+    };
+
+    // 新增
+    document.getElementById("addBtn").onclick = async function () {
+        const name = prompt("请输入按钮名称：");
+        if (!name) return;
+        await fetch("/api/addItem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("token")
+            },
+            body: JSON.stringify({ name })
+        });
+        loadItems();
+    };
+
+    // 删除
+    async function deleteItem(id) {
+        if (!confirm("确认删除？")) return;
+        await fetch(`/api/deleteItem/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: localStorage.getItem("token") }
+        });
+        loadItems();
+    }
+
+    checkAuth();
+</script>
 </body>
 </html>

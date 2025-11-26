@@ -1,4 +1,4 @@
-package com.database.config;
+package com.finn.wishlist.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;

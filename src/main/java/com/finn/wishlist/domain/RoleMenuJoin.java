@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("role_info")
+@TableName("role_menu_join")
 @EqualsAndHashCode(callSuper = true)
-public class RoleInfo extends TimeEntity {
+public class RoleMenuJoin extends TimeEntity {
 
     /**
      * 主键ID
@@ -22,7 +22,12 @@ public class RoleInfo extends TimeEntity {
     private Integer id;
 
     /**
-     * 角色名称
+     * 角色ID
      */
-    private String roleName;
+    private String roleId;
+
+    /**
+     * 菜单ID
+     */
+    private String menuId;
 }

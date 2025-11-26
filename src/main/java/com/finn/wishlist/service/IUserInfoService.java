@@ -1,4 +1,7 @@
 package com.finn.wishlist.service;
 
-public class IUserInfoService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.finn.wishlist.domain.UserInfo;
+
+public interface IUserInfoService extends IService<UserInfo>  {
 }
