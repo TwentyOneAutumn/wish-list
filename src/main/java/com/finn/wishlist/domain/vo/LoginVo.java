@@ -5,7 +5,6 @@ import com.finn.wishlist.domain.RoleInfo;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 public class LoginVo {
