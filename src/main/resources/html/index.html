@@ -9,7 +9,7 @@
 </head>
 <body class="bg-light">
 <!-- 登录页面 -->
-<div id="loginPage" class="container mt-5" style="max-width:400px; display:none;">
+<div id="loginPage" class="container mt-5" style="max-width:400px;">
     <div class="card p-4 shadow">
         <h4 class="text-center mb-3">登录</h4>
         <div class="mb-3">
@@ -29,19 +29,10 @@
 <script>
     const BASE_URL = "http://127.0.0.1:521";
 
-    // ======= 身份校验 =======
-    function checkAuth() {
-        const userInfo = localStorage.getItem("userInfo");
-        if (!userInfo) {
-            window.location.href = "index.html";
-        }
-    }
-
     // ======= 登录 =======
     document.getElementById("loginBtn").onclick = async function () {
         const userCode = document.getElementById("userCode").value;
         const password = document.getElementById("password").value;
-
         fetch(`${BASE_URL}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -56,10 +47,7 @@
                 alert(data.msg || "登录失败");
             }
         });
-
     };
-
-    checkAuth();
 </script>
 </body>
 </html>

@@ -10,8 +10,8 @@ spring:
     name: wish-list
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.124.149:3306/wish_list?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://10.211.55.3:3306/wish_list?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://192.168.124.149:3306/wish_list?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://10.211.55.3:3306/wish_list?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: "2762581@com"
 mybatis-plus:
