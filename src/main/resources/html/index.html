@@ -41,7 +41,9 @@
         .then(res => res.json())
         .then(data => {
             if (data.code === 200) {
-                localStorage.setItem("userInfo", data.rows);
+                // 存储到Session中
+                sessionStorage.setItem("userInfo", JSON.stringify(data.row));
+                // 跳转页面
                 window.location.href = "main.html";
             } else {
                 alert(data.msg || "登录失败");

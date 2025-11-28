@@ -57,13 +57,14 @@
         loadItems();
     });
 
-    // ======= Token 校验 =======
+    // 身份校验
     function checkAuth() {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("userInfo");
+        console.log(token);
+        // 如果没有用户信息则跳转到登录页面
         if (!token) {
             window.location.href = "index.html";
         }
-        loadItems();
     }
 
 
@@ -178,7 +179,8 @@
         loadItems();
     }
 
-    // checkAuth();
+    // 校验身份
+    checkAuth();
 </script>
 </body>
 </html>

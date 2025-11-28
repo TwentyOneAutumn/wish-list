@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,6 +42,11 @@ public class UserTarget extends TimeEntity {
      * 是否完成
      */
     private Boolean isFinished;
+
+    /**
+     * 完成时间
+     */
+    private LocalDate finishedTime;
 
     /**
      * 备注
